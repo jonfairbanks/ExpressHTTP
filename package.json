@@ -10,11 +10,28 @@
   "author": "Jon Fairbanks",
   "license": "MIT",
   "dependencies": {
-    "ddos": "^0.1.28",
+    "ddos": "^0.1.31",
     "express": "^4.16.3",
     "express-rate-limit": "^2.11.0",
     "express-session": "^1.15.6",
     "lusca": "^1.6.0",
     "morgan": "^1.9.0"
-  }
+  },
+  "engines": {
+    "node": "8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jonfairbanks/ExpressHTTP"
+  },
+  "keywords": [
+    "http",
+    "http server",
+    "http-server",
+    "express",
+    "express server",
+    "express-server",
+    "file server"
+    "file-server"
+  ]
 }
