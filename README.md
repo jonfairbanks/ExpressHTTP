@@ -8,10 +8,11 @@ Express HTTP File Server with Lusca and DDoS Rate Limiting
 - Port 8888 Open and Accessible
 
 #### Quick Start
-Fetch the code using git or wget
-While in the app directory, `yarn` or `npm install` to setup
-Once complete, `yarn start` or `npm start` to launch the server
-Load files into the **public/** directory
+- Fetch the code using git or wget
+- While in the app directory, `yarn` or `npm install` to setup
+- Once complete, `yarn start` or `npm start` to launch the server
+- Load files into the **public/** directory
+- Navigate to <host>:8888/ in your browser
 
 *[Optional] To keep ExpressHTTP up and running behind the scenes, checkout [PM2](http://pm2.keymetrics.io/ "PM2").*
 
