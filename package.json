@@ -29,9 +29,7 @@
     "http server",
     "http-server",
     "express",
-    "express server",
     "express-server",
-    "file server"
     "file-server"
   ]
 }
