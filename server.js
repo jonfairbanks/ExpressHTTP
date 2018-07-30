@@ -64,7 +64,10 @@ if(process.env.RATE_LIMIT == true) {
   app.use('/', limiter)
 }
 
+var port = null;
+if(process.env.PORT){ port = process.env.PORT; }else{ port = 8888; } // Default port is 8888 unless passed
+
 app.disable('x-powered-by') // Disables Express' "X-Powered-By" Header
 app.use('/', express.static(path.join(__dirname, process.env.SITE_ROOT || 'public'))) // Use the ENV defined site root or default "public"
 
-app.listen(8888, () => console.log('App Listening on Port 8888'))
+app.listen(port, () => console.log('App Listening on Port ' + port))
