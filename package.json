@@ -31,7 +31,7 @@
     "express",
     "express server",
     "express-server",
-    "file server"
+    "file server",
     "file-server"
   ]
 }
