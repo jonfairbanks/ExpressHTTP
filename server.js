@@ -17,32 +17,19 @@ const express = require('express'),
   path = require('path'),
   morgan = require('morgan'),
   session = require('express-session'),
-  lusca = require('lusca')
-  mongoose = require('mongoose');
+  lusca = require('lusca'),
+  mongoose = require('mongoose'),
   bodyParser = require('body-parser');
 
 const app = express()
-const router = express.Router();
-
-// Setup Session Management & Lusca
-if(!process.env.SESSION_SECRET){ console.warn("SESSION_SECRET not passed. Using a default value."); }
-app.use(session({
-	secret: process.env.SESSION_SECRET || "MySessionSecret",
-	resave: false,
-	saveUninitialized: true,
-  cookie: { secure: true }
-}))
-
-if(process.env.MODE="web"){
-
-}
+const router = express.Router()
 
 // Set additional headers and other middlewares if required
 app.disable('x-powered-by') // Disables Express' "X-Powered-By" Header
 app.use(function(req, res, next) {
   res.setHeader('X-Timestamp', Date.now()) // Tag all requests with a timestamp
   res.setHeader('X-Words-of-Wisdom', '"You come at the king, you best not miss." - Omar Little') // Yo dawg...
-  next();
+  next()
 })
 
 if(process.env.LOGGING == true) {
@@ -63,20 +50,21 @@ if(process.env.RATE_LIMIT == true) {
   app.use('/', limiter)
 }
 
-var port = null;
+var port = null
 if(process.env.PORT){ port = process.env.PORT; }else{ port = 8888; } // Default port is 8888 unless passed
 
 if(process.env.MODE='api'){
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(bodyParser.json());
+  console.log('**   The Server is starting in API mode!   **')
+  app.use(bodyParser.urlencoded({ extended: true }))
+  app.use(bodyParser.json())
   //To prevent errors from Cross Origin Resource Sharing, set headers to allow CORS with middleware
   app.use(function(req, res, next) {
-   res.setHeader('Access-Control-Allow-Origin', '*');
-   res.setHeader('Access-Control-Allow-Credentials', 'true');
-   res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-   res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
-   res.setHeader('Cache-Control', 'no-cache'); // Remove caching so we get the most recent values
-   next();
+   res.setHeader('Access-Control-Allow-Origin', '*')
+   res.setHeader('Access-Control-Allow-Credentials', 'true')
+   res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE')
+   res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers')
+   res.setHeader('Cache-Control', 'no-cache') // Remove caching so we get the most recent values
+   next()
   });
   //now we can set the route path & initialize the API
   router.get('/', function(req, res) {
@@ -86,6 +74,15 @@ if(process.env.MODE='api'){
   //starts the server and listens for requests
   app.listen(port, () => console.log('API Listening on Port ' + port))
 }else {
+  // Setup Session Management & Lusca
+  if(!process.env.SESSION_SECRET){ console.warn("SESSION_SECRET not passed. Using a default value.") }
+  app.use(session({
+  	secret: process.env.SESSION_SECRET || "MySessionSecret",
+  	resave: false,
+  	saveUninitialized: true,
+    cookie: { secure: true }
+  }))
+  
   app.use(lusca({
     csrf: true,
     csp: false, // Set a valid CSP if desired - https://hacks.mozilla.org/2016/02/implementing-content-security-policy/
