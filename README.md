@@ -24,3 +24,4 @@ The following options can be passed in at runtime as ENV variables:
 - `RATE_LIMIT`: If **true**, enables DDoS and RateLimit protections through Express
 - `SITE_ROOT`: If set to a string, that path will be used as the default site root instead of the default of **public/**.
 - `PORT`: If set, an alternate port will be used when starting ExpressHTTP. Otherwise, the default of **8888** will be used.
+- `MODE`: If set as `api`, ExpressHTTP will start in API mode and return a JSON response at /api.
