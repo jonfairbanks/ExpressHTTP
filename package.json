@@ -1,12 +1,11 @@
 {
   "name": "ExpressHTTP",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Express HTTP File Server with Lusca and DDoS Rate Limiting",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm start server.js",
-    "yarn-start": "yarn start server.js"
+    "start": "node server.js"
   },
   "author": "Jon Fairbanks",
   "license": "MIT",
