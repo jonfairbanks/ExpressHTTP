@@ -82,7 +82,6 @@ if(process.env.MODE='api'){
   	saveUninitialized: true,
     cookie: { secure: true }
   }))
-  
   app.use(lusca({
     csrf: true,
     csp: false, // Set a valid CSP if desired - https://hacks.mozilla.org/2016/02/implementing-content-security-policy/
