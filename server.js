@@ -40,7 +40,7 @@ app.use(lusca({
 }))
 
 // Set additional headers and other middlewares if required
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.setHeader('X-Timestamp', Date.now()) // Tag all requests with a timestamp
   res.setHeader('X-Words-of-Wisdom', '"You come at the king, you best not miss." - Omar Little') // Yo dawg...
   next();
