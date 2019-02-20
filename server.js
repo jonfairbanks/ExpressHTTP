@@ -26,9 +26,9 @@ const router = express.Router()
 
 // Set additional headers and other middlewares if required
 app.disable('x-powered-by') // Disables Express' "X-Powered-By" Header
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.setHeader('X-Timestamp', Date.now()) // Tag all requests with a timestamp
-  res.setHeader('X-Words-of-Wisdom', '"You come at the king, you best not miss." - Omar Little') // Yo dawg...
+  res.setHeader('X-Words-of-Wisdom', 'You come at the king, you best not miss. - Omar Little') // Yo dawg...
   next()
 })
 
@@ -43,7 +43,7 @@ if(process.env.RATE_LIMIT == true) {
   const ddos = new Ddos({burst:10, limit:15})
   const limiter = new RateLimit({
     windowMs: 15*60*1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
+    max: 100, // Limit each IP to 100 requests per windowMs
     delayMs: 0 // Disable delaying - full speed until the max limit is reached
   })
   app.use(ddos.express)
@@ -57,21 +57,20 @@ if(process.env.MODE='api'){
   console.log('**   The Server is starting in API mode!   **')
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(bodyParser.json())
-  //To prevent errors from Cross Origin Resource Sharing, set headers to allow CORS with middleware
-  app.use(function(req, res, next) {
-   res.setHeader('Access-Control-Allow-Origin', '*')
-   res.setHeader('Access-Control-Allow-Credentials', 'true')
-   res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE')
-   res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers')
-   res.setHeader('Cache-Control', 'no-cache') // Remove caching so we get the most recent values
-   next()
+  // To prevent errors from Cross-Origin resource sharing, set headers to allow CORS with middleware
+  app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Credentials', 'true')
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE')
+    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers')
+    res.setHeader('Cache-Control', 'no-cache')
+    next()
   });
   //now we can set the route path & initialize the API
-  router.get('/', function(req, res) {
+  router.get('/', (req, res) => {
    res.json({ message: 'API Initialized!'})
   });
   app.use('/api', router)
-  //starts the server and listens for requests
   app.listen(port, () => console.log('API Listening on Port ' + port))
 }else {
   // Setup Session Management & Lusca
