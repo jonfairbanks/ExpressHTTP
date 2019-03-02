@@ -17,7 +17,7 @@ Express HTTP File Server with Lusca and DDoS Rate Limiting
 *[Optional] To keep ExpressHTTP up and running behind the scenes, checkout [PM2](http://pm2.keymetrics.io/ "PM2").*
 
 #### Running with Docker
-`docker run -d -p 8888:8888 -v ~/ExpressHTTP:/usr/src/app --name ExpressHTTP --restart=always jonfairbanks/ExpressHTTP`
+`docker run -d -p 8888:8888 -v ~/ExpressHTTP:/usr/src/app --name ExpressHTTP --restart=always jonfairbanks/expresshttp`
 
 #### Config Options
 The following options can be passed in at runtime as ENV variables:
