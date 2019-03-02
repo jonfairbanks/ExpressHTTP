@@ -3,7 +3,7 @@
 Express HTTP File Server with Lusca and DDoS Rate Limiting
 
 #### Prerequisites
-- Node v8
+- Node v8+
 - Yarn (prefered) or NPM
 - Port 8888 Open and Accessible
 
