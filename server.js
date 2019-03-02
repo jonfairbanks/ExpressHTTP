@@ -1,14 +1,3 @@
-//
-// Express HTTP File Server with Lusca and DDoS Rate Limiting
-//
-// Author: Jon Fairbanks (https://github.com/jonfairbanks)
-//
-// Options:
-//    - SESSION_SECRET: Either a string or array of secrets used to sign the session ID cookie (If array: first is used to sign, others are used to verify)
-//    - LOGGING: If 'true', an access.log will be created for incoming site requests using Morgan logging
-//    - RATE_LIMIT: If 'true', enables DDoS and RateLimit protections through Express
-//    - SITE_ROOT: If set to a string, that path will be used as the default site root instead of the default of 'public'
-//
 const express = require('express'),
   Ddos = require('ddos'),
   RateLimit = require('express-rate-limit'),
@@ -41,8 +30,9 @@ app.use(lusca({
 
 // Set additional headers and other middlewares if required
 app.use((req, res, next) => {
+  res.removeHeader("X-Powered-By");
   res.setHeader('X-Timestamp', Date.now()) // Tag all requests with a timestamp
-  res.setHeader('X-Words-of-Wisdom', '"You come at the king, you best not miss." - Omar Little') // Yo dawg...
+  res.setHeader('X-Words-of-Wisdom', 'You come at the king, you best not miss. - Omar Little') // Yo dawg...
   next();
 })
 
@@ -67,7 +57,6 @@ if(process.env.RATE_LIMIT == true) {
 var port = null;
 if(process.env.PORT){ port = process.env.PORT; }else{ port = 8888; } // Default port is 8888 unless passed
 
-app.disable('x-powered-by') // Disables Express' "X-Powered-By" Header
 app.use('/', express.static(path.join(__dirname, process.env.SITE_ROOT || 'public'))) // Use the ENV defined site root or default "public"
 
 app.listen(port, () => console.log('App Listening on Port ' + port))
