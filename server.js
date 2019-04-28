@@ -5,7 +5,7 @@ const express = require('express'),
   path = require('path'),
   morgan = require('morgan'),
   session = require('express-session'),
-  lusca = require('lusca')
+  helmet = require('helmet')
 
 const app = express()
 
@@ -18,15 +18,7 @@ app.use(session({
   cookie: { secure: true }
 }))
 
-app.use(lusca({
-  csrf: true,
-  csp: false, // Set a valid CSP if desired - https://hacks.mozilla.org/2016/02/implementing-content-security-policy/
-  xframe: 'SAMEORIGIN',
-  hsts: {maxAge: 31536000, includeSubDomains: true, preload: true},
-  xssProtection: true,
-  nosniff: true,
-  referrerPolicy: 'same-origin'
-}))
+app.use(helmet())
 
 // Set additional headers and other middlewares if required
 app.use((req, res, next) => {
