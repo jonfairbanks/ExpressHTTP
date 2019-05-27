@@ -12,7 +12,7 @@
   "dependencies": {
     "ddos": "^0.2.1",
     "express": "^4.16.4",
-    "express-rate-limit": "^3.4.0",
+    "express-rate-limit": "^4.0.2",
     "express-session": "^1.15.6",
     "helmet": "^3.16.0",
     "morgan": "^1.9.1"
