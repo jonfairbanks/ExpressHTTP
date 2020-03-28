@@ -1,21 +1,55 @@
-FROM mhart/alpine-node
+# Base
+FROM node:12-slim as base
+RUN apt-get update; apt-get install wget gpg -y
+ENV NODE_ENV=production
+RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+    export TINI_VERSION='0.18.0'; \
+	wget -O /usr/local/bin/tini "https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-$dpkgArch"; \
+	wget -O /usr/local/bin/tini.asc "https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-$dpkgArch.asc"; \
+	export GNUPGHOME="$(mktemp -d)"; \
+	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 6380DC428747F6C393FEACA59A84159D7001A4E5; \
+	gpg --batch --verify /usr/local/bin/tini.asc /usr/local/bin/tini; \
+	gpgconf --kill all; \
+	rm -r "$GNUPGHOME" /usr/local/bin/tini.asc; \
+	chmod +x /usr/local/bin/tini;
+RUN apt-get purge wget gpg -y; apt-get autoremove -y; apt-get autoclean; rm -rf /var/lib/{apt,dpkg,cache,log}/
+# apt-get is unavailable after this point
+EXPOSE 3000
+RUN mkdir /app && chown -R node:node /app
+WORKDIR /app
+USER node
+COPY --chown=node:node package*.json ./
+RUN  npm install --no-optional --silent && npm cache clean --force > "/dev/null" 2>&1
 
-# Run as Non-Root
-RUN adduser -D -u 1000 appuser \
-    && mkdir -p /usr/src/app \
-    && chown -R appuser /usr/src/app /usr/lib/node_modules
-USER appuser
-WORKDIR /usr/src/app
+# Development ENV
+FROM base as dev
+ENV NODE_ENV=development
+ENV PATH=/app/node_modules/.bin:$PATH
+RUN npm install --only=development --no-optional --silent && npm cache clean --force > "/dev/null" 2>&1
+CMD ["nodemon", "server.js", "--inspect=0.0.0.0:9229"]
 
-# Quietly Install Dependencies
-ENV NPM_CONFIG_PREFIX=/usr/src/app/.npm-global
-COPY package*.json yarn*.* ./
-RUN  yarn install --production --silent && npm i pm2 -g > "/dev/null" 2>&1
+# Source
+FROM base as source
+COPY --chown=node:node . .
 
-# Bundle App Source
-COPY . .
+# Test ENV
+FROM source as test
+ENV NODE_ENV=development
+ENV PATH=/app/node_modules/.bin:$PATH
+COPY --from=dev /app/node_modules /app/node_modules
+RUN eslint .
+# RUN npm test // Disabled pending unit tests
 
-# Internal Application Port
-EXPOSE 8080
+# Audit ENV
+FROM test as audit
+USER root
+RUN npm audit --audit-level critical
+ARG MICROSCANNER_TOKEN
+ADD https://get.aquasec.com/microscanner /
+RUN chmod +x /microscanner
+RUN /microscanner $MICROSCANNER_TOKEN --continue-on-failure
 
-CMD [ "/usr/src/app/.npm-global/lib/node_modules/pm2/bin/pm2-runtime", "server.js" ]
+# Production ENV
+FROM source as prod
+ENTRYPOINT ["/usr/local/bin/tini", "--"]
+CMD ["node", "server.js"]
