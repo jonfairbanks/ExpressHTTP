@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "lint": "./node_modules/eslint/bin/eslint.js .",
+    "lint-fix": "./node_modules/eslint/bin/eslint.js . --fix"
   },
   "author": "Jon Fairbanks",
   "license": "MIT",
@@ -27,5 +29,11 @@
     "express-server",
     "file server",
     "file-server"
-  ]
+  ],
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "nodemon": "^2.0.2"
+  }
 }
