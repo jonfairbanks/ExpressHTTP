@@ -12,11 +12,13 @@
   "author": "Jon Fairbanks",
   "license": "MIT",
   "dependencies": {
+    "connect-redis": "^4.0.4",
     "ddos": "^0.2.1",
     "express": "^4.17.1",
     "express-rate-limit": "^5.0.0",
     "express-session": "^1.15.6",
     "helmet": "^3.18.0",
+    "ioredis": "^4.16.2",
     "morgan": "^1.9.1"
   },
   "repository": "https://github.com/jonfairbanks/ExpressHTTP",
