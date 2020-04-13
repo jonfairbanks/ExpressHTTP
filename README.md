@@ -31,7 +31,7 @@ ExpressHTTP is also available on DockerHub.
 
 Before Docker setup, ensure Redis is running and finally run the following command: 
 
-`docker run -d -p 8888:8888 -v ~/ExpressHTTP:/usr/src/app/public --name ExpressHTTP --restart=always jonfairbanks/expresshttp`
+`docker run -d -p 8888:8888 -e REDIS_HOST=1.2.3.4 -v ~/ExpressHTTP/public:/app/public --name ExpressHTTP --restart=always jonfairbanks/expresshttp`
 
 #### Config Options
 
