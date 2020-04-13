@@ -17,7 +17,16 @@ Express HTTP File Server with Lusca and DDoS Rate Limiting
 *[Optional] To keep ExpressHTTP up and running behind the scenes, checkout [PM2](http://pm2.keymetrics.io/ "PM2").*
 
 #### Running with Docker
+<<<<<<< Updated upstream
 `docker run -d -p 8888:8888 -v ~/ExpressHTTP:/usr/src/app --name ExpressHTTP --restart=always jonfairbanks/expresshttp`
+=======
+
+ExpressHTTP is also available on [DockerHub](https://hub.docker.com/r/jonfairbanks/expresshttp).
+
+Before Docker setup, ensure Redis is running and finally run the following command: 
+
+`docker run -d -p 8888:8888 -e REDIS_HOST=1.2.3.4 -v ~/ExpressHTTP/public:/app/public --name ExpressHTTP --restart=always jonfairbanks/expresshttp`
+>>>>>>> Stashed changes
 
 #### Config Options
 The following options can be passed in at runtime as ENV variables:
