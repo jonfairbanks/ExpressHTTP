@@ -1,28 +1,46 @@
 # ExpressHTTP :shipit:
 
-Express HTTP File Server with Lusca and DDoS Rate Limiting
+Express HTTP File Server with Helmet and DDoS Rate Limiting
 
 #### Prerequisites
-- Node v8+
-- Yarn (prefered) or NPM
-- Port 8888 Open and Accessible
+
+- Node v10+
+- A Redis instance: `docker run --name redis -d -p 6379:6379 redis`
 
 #### Quick Start
+
 - Fetch the code using git or wget
-- While in the app directory, `yarn` or `npm install` to setup
-- Once complete, `yarn start` or `npm start` to launch the server
+- While in the app directory run `npm install` to setup
+- Once complete, run `npm start` to launch the server
 - Load files into the **public/** directory
 - Navigate to <host>:8888/ in your browser
 
 *[Optional] To keep ExpressHTTP up and running behind the scenes, checkout [PM2](http://pm2.keymetrics.io/ "PM2").*
 
+#### Production Support
+
+To properly enable session support in ExpressHTTP, you must utilize a Redis instance. By default ExpressHTTP connects to a Redis instance running on the localhost when the app is launched in `production` mode. To override these settings, see the [Config Options](#Config-Options) below.
+
+To setup a Redis instance if you do not have one running already: `docker run --name redis -d -p 6379:6379 redis`
+
+Finally, run ExpressHTTP in `production` mode: `NODE_ENV=production npm start`
+
 #### Running with Docker
-`docker run -d -p 8888:8888 -v ~/ExpressHTTP:/usr/src/app --name ExpressHTTP --restart=always jonfairbanks/expresshttp`
+
+ExpressHTTP is also available on DockerHub.
+
+Before Docker setup, ensure Redis is running and finally run the following command: 
+
+`docker run -d -p 8888:8888 -e REDIS_HOST=1.2.3.4 -v ~/ExpressHTTP/public:/app/public --name ExpressHTTP --restart=always jonfairbanks/expresshttp`
 
 #### Config Options
+
 The following options can be passed in at runtime as ENV variables:
-- `SESSION_SECRET`: Either a string or array of secrets used to sign the session ID cookie (If array: first is used to sign, others are used to verify)
+- `SESSION_SECRET`: Either a string or array of secrets used to sign the session ID cookie
+    - If array is passed -- the first secret is to sign, other secrets are used to verify
 - `LOGGING`: If **true**, an access.log will be created for incoming site requests using Morgan logging
 - `RATE_LIMIT`: If **true**, enables DDoS and RateLimit protections through Express
-- `SITE_ROOT`: If set to a string, that path will be used as the default site root instead of the default of **public/**.
-- `PORT`: If set, an alternate port will be used when starting ExpressHTTP. Otherwise, the default of **8888** will be used.
+- `SITE_ROOT`: Override the default path files are served from (default: /public)
+- `PORT`: Override the default address the ExpressHTTP app is served from (default: 8888)
+- `REDIS_HOST`: Override the default address used to connect to Redis (default: 127.0.0.1)
+- `REDIS_PORT`: Override the default port used to connect to Redis (default: 6370)

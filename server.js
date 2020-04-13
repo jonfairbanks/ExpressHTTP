@@ -6,18 +6,37 @@ const path = require('path');
 const morgan = require('morgan');
 const session = require('express-session');
 const helmet = require('helmet');
+const connectRedis = require('connect-redis');
+const { redis } = require('./redis');
 
 const app = express();
 
-// Setup Session Management & Lusca
-if (!process.env.SESSION_SECRET) { console.warn('SESSION_SECRET not passed. Using a default value.'); } // eslint-disable-line no-console
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'MySessionSecret',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true },
-}));
+// Setup Session Management
+if (!process.env.SESSION_SECRET) { console.warn('SESSION_SECRET not passed. Using a default value.\n'); } // eslint-disable-line no-console
 
+if (process.env.NODE_ENV === 'production') {
+  const RedisStore = connectRedis(session);
+  app.use(session({
+    store: new RedisStore({
+      client: redis,
+    }),
+    name: 'ExpressHTTP',
+    secret: process.env.SESSION_SECRET || 'MyExpressHTTPSecret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: true },
+  }));
+} else {
+  app.use(session({
+    name: 'ExpressHTTP',
+    secret: process.env.SESSION_SECRET || 'MyExpressHTTPSecret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: true },
+  }));
+}
+
+// Setup Helmet
 app.use(helmet());
 
 // Set additional headers and other middlewares if required
@@ -37,8 +56,8 @@ if (process.env.RATE_LIMIT === true) {
   // Setup DDoS & Rate Limiting
   const ddos = new Ddos({ burst: 10, limit: 15 });
   const limiter = new RateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
+    windowMs: 5 * 60 * 1000, // 5 minutes
+    max: 1000, // limit each IP to 100 requests per windowMs
     delayMs: 0, // disable delaying - full speed until the max limit is reached
   });
   app.use(ddos.express);
