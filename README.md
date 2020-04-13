@@ -27,7 +27,7 @@ Finally, run ExpressHTTP in `production` mode: `NODE_ENV=production npm start`
 
 #### Running with Docker
 
-ExpressHTTP is also available on DockerHub.
+ExpressHTTP is also available on [DockerHub](https://hub.docker.com/r/jonfairbanks/expresshttp).
 
 Before Docker setup, ensure Redis is running and finally run the following command: 
 
