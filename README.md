@@ -42,5 +42,6 @@ The following options can be passed in at runtime as ENV variables:
 - `RATE_LIMIT`: If **true**, enables DDoS and RateLimit protections through Express
 - `SITE_ROOT`: Override the default path files are served from (default: /public)
 - `PORT`: Override the default address the ExpressHTTP app is served from (default: 8888)
+- `REDIS`: If **true**, Express sessions will be saved in Redis (ideal for production)
 - `REDIS_HOST`: Override the default address used to connect to Redis (default: 127.0.0.1)
 - `REDIS_PORT`: Override the default port used to connect to Redis (default: 6370)

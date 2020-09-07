@@ -6,15 +6,15 @@ const path = require('path');
 const morgan = require('morgan');
 const session = require('express-session');
 const helmet = require('helmet');
-const connectRedis = require('connect-redis');
-const { redis } = require('./redis');
 
 const app = express();
 
 // Setup Session Management
 if (!process.env.SESSION_SECRET) { console.warn('SESSION_SECRET not passed. Using a default value.\n'); } // eslint-disable-line no-console
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.REDIS) {
+  const connectRedis = require('connect-redis'); // eslint-disable-line global-require
+  const { redis } = require('./redis'); // eslint-disable-line global-require
   const RedisStore = connectRedis(session);
   app.use(session({
     store: new RedisStore({
@@ -26,6 +26,7 @@ if (process.env.NODE_ENV === 'production') {
     saveUninitialized: false,
     cookie: { secure: true },
   }));
+  console.info('Redis Session Management is enabled'); // eslint-disable-line no-console
 } else {
   app.use(session({
     name: 'ExpressHTTP',
