@@ -32,9 +32,9 @@ jobs:
       - name: Commit Version Updates
         uses: EndBug/add-and-commit@v7.2.1
         with:
-          message: "v${{ steps.update-versions.outputs.version }}"
-          tag: "${{ steps.update-versions.outputs.version }}"
-          push: "origin master --force"
+          message: 'v${{ steps.update-versions.outputs.version }}'
+          tag: '${{ steps.update-versions.outputs.version }}'
+          push: 'origin master --force'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
