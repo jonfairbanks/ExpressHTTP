@@ -1,5 +1,12 @@
 # ExpressHTTP :shipit:
 
+![GitHub Workflow Status](<https://img.shields.io/github/workflow/status/jonfairbanks/ExpressHTTP/Create%20Release(s)?label=Docker%20Build>)
+![GitHub top language](https://img.shields.io/github/languages/top/jonfairbanks/ExpressHTTP.svg)
+![Docker Pulls](https://img.shields.io/docker/pulls/jonfairbanks/express-http.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/jonfairbanks/ExpressHTTP.svg)
+![Lines of code](https://img.shields.io/tokei/lines/github/jonfairbanks/ExpressHTTP)
+![License](https://img.shields.io/github/license/jonfairbanks/ExpressHTTP.svg?style=flat)
+
 Express HTTP File Server with Helmet and DDoS Rate Limiting
 
 #### Prerequisites
