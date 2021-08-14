@@ -1,0 +1,13 @@
+{{- if or (and .Values.autoscaling.enabled (gt (.Values.autoscaling.minReplicas | int) 1)) (gt (.Values.replicaCount | int) 1) -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    {{- include "express-http.labels" . | nindent 4 }}
+  name: {{ include "express-http.fullname" . }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "express-http.selectorLabels" . | nindent 6 }}
+  minAvailable: {{ .Values.minAvailable }}
+{{- end }}

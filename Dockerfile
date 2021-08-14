@@ -1,20 +1,20 @@
 # Base
-FROM node:12-slim as base
+FROM node:14-slim as base
 RUN apt-get update; apt-get install wget gpg -y
 ENV NODE_ENV=production
 RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
-    export TINI_VERSION='0.18.0'; \
-	wget -O /usr/local/bin/tini "https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-$dpkgArch"; \
-	wget -O /usr/local/bin/tini.asc "https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-$dpkgArch.asc"; \
-	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 6380DC428747F6C393FEACA59A84159D7001A4E5; \
-	gpg --batch --verify /usr/local/bin/tini.asc /usr/local/bin/tini; \
-	gpgconf --kill all; \
-	rm -r "$GNUPGHOME" /usr/local/bin/tini.asc; \
-	chmod +x /usr/local/bin/tini;
+  export TINI_VERSION='0.18.0'; \
+  wget -O /usr/local/bin/tini "https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-$dpkgArch"; \
+  wget -O /usr/local/bin/tini.asc "https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-$dpkgArch.asc"; \
+  export GNUPGHOME="$(mktemp -d)"; \
+  gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 6380DC428747F6C393FEACA59A84159D7001A4E5; \
+  gpg --batch --verify /usr/local/bin/tini.asc /usr/local/bin/tini; \
+  gpgconf --kill all; \
+  rm -r "$GNUPGHOME" /usr/local/bin/tini.asc; \
+  chmod +x /usr/local/bin/tini;
 RUN apt-get purge wget gpg -y; apt-get autoremove -y; apt-get autoclean; rm -rf /var/lib/{apt,dpkg,cache,log}/
 # apt-get is unavailable after this point
-EXPOSE 3000
+EXPOSE 8080
 RUN mkdir /app && chown -R node:node /app
 WORKDIR /app
 USER node
@@ -26,7 +26,7 @@ FROM base as dev
 ENV NODE_ENV=development
 ENV PATH=/app/node_modules/.bin:$PATH
 RUN npm install --only=development --no-optional --silent && npm cache clean --force > "/dev/null" 2>&1
-CMD ["nodemon", "server.js", "--inspect=0.0.0.0:9229"]
+CMD ["nodemon", "index.js", "--inspect=0.0.0.0:9229"]
 
 # Source
 FROM base as source
@@ -52,4 +52,4 @@ RUN /microscanner $MICROSCANNER_TOKEN --continue-on-failure
 # Production ENV
 FROM source as prod
 ENTRYPOINT ["/usr/local/bin/tini", "--"]
-CMD ["node", "server.js"]
+CMD ["node", "index.js"]

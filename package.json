@@ -2,10 +2,10 @@
   "name": "ExpressHTTP",
   "version": "1.0.1",
   "description": "Express HTTP File Server with Lusca and DDoS Rate Limiting",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "lint-fix": "./node_modules/eslint/bin/eslint.js . --fix"
   },
