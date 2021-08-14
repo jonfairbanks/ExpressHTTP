@@ -15,7 +15,7 @@ Express HTTP File Server with Helmet and DDoS Rate Limiting
 - Load files into the **public/** directory
 - Navigate to <host>:8888/ in your browser
 
-*[Optional] To keep ExpressHTTP up and running behind the scenes, checkout [PM2](http://pm2.keymetrics.io/ "PM2").*
+_[Optional] To keep ExpressHTTP up and running behind the scenes, checkout [PM2](http://pm2.keymetrics.io/ 'PM2')._
 
 #### Production Support
 
@@ -29,19 +29,20 @@ Finally, run ExpressHTTP in `production` mode: `NODE_ENV=production npm start`
 
 ExpressHTTP is also available on [DockerHub](https://hub.docker.com/r/jonfairbanks/expresshttp).
 
-Before Docker setup, ensure Redis is running and finally run the following command: 
+Before Docker setup, ensure Redis is running and finally run the following command:
 
-`docker run -d -p 8888:8888 -e REDIS_HOST=1.2.3.4 -v ~/ExpressHTTP/public:/app/public --name ExpressHTTP --restart=always jonfairbanks/expresshttp`
+`docker run -d -p 8080:8080 -e REDIS_HOST=1.2.3.4 -v ~/ExpressHTTP/public:/app/public --name ExpressHTTP --restart=always jonfairbanks/expresshttp`
 
 #### Config Options
 
 The following options can be passed in at runtime as ENV variables:
+
 - `SESSION_SECRET`: Either a string or array of secrets used to sign the session ID cookie
-    - If array is passed -- the first secret is to sign, other secrets are used to verify
+  - If array is passed -- the first secret is to sign, other secrets are used to verify
 - `LOGGING`: If **true**, an access.log will be created for incoming site requests using Morgan logging
 - `RATE_LIMIT`: If **true**, enables DDoS and RateLimit protections through Express
 - `SITE_ROOT`: Override the default path files are served from (default: /public)
-- `PORT`: Override the default address the ExpressHTTP app is served from (default: 8888)
+- `PORT`: Override the default address the ExpressHTTP app is served from (default: 8080)
 - `REDIS`: If **true**, Express sessions will be saved in Redis (ideal for production)
 - `REDIS_HOST`: Override the default address used to connect to Redis (default: 127.0.0.1)
 - `REDIS_PORT`: Override the default port used to connect to Redis (default: 6370)
