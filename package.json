@@ -1,6 +1,6 @@
 {
   "name": "ExpressHTTP",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Express HTTP File Server with Lusca and DDoS Rate Limiting",
   "main": "index.js",
   "scripts": {
