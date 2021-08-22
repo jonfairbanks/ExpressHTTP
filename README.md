@@ -20,7 +20,7 @@ Express HTTP File Server with Helmet and DDoS Rate Limiting
 - While in the app directory run `npm install` to setup
 - Once complete, run `npm start` to launch the server
 - Load files into the **public/** directory
-- Navigate to <host>:8888/ in your browser
+- Navigate to <host>:8080/ in your browser
 
 _[Optional] To keep ExpressHTTP up and running behind the scenes, checkout [PM2](http://pm2.keymetrics.io/ 'PM2')._
 
